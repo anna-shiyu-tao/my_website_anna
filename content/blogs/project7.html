@@ -15,7 +15,7 @@ title: Capital asset pricing model
 
 <p>Introduction to the Capital Asset Pricing Model (CAPM)</p>
 <p>The Capital Asset Market Pricing Model (CAPM) states that the return on a particular risky asset is related to returns of the ‘market’ as follows:</p>
-<p>Return(asset) = alpha + beta*Return(market)+error</p>
+<p>Return(asset) = alpha + beta*Return(market) + error</p>
 <p>Here, I use several individual stocks as target from the end of 2018 till now (Oct 2020).</p>
 <pre class="r"><code>myStocks &lt;- c(&quot;AAPL&quot;,&quot;AMZN&quot;,&quot;MSFT&quot;,&quot;FB&quot;,&quot;SPY&quot; ) %&gt;%
   tq_get(get  = &quot;stock.prices&quot;,
