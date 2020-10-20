@@ -1,0 +1,164 @@
+---
+categories:
+- ""
+- ""
+date: "2020-10-20"
+description: Returns of financial stocks
+draft: false
+image: pic12.jpg
+keywords: ""
+slug: project6
+title: Returns of financial stocks
+---
+
+
+
+<p>You may find useful the material on <a href="https://mfa2021.netlify.app/reference/finance_data/">finance data sources</a>.</p>
+<p>We will use the <code>tidyquant</code> package to download historical data of stock prices, calculate returns, and examine the distribution of returns.</p>
+<p>We must first identify which stocks we want to download data for, and for this we must know their ticker symbol; Apple is known as AAPL, Microsoft as MSFT, McDonald’s as MCD, etc. The file <code>nyse.csv</code> contains 508 stocks listed on the NYSE, their ticker <code>symbol</code>, <code>name</code>, the IPO (Initial Public Offering) year, and the sector and industry the company is in.</p>
+<pre class="r"><code>nyse &lt;- read_csv(here::here(&quot;data&quot;,&quot;nyse.csv&quot;))
+glimpse((nyse))</code></pre>
+<pre><code>## Rows: 508
+## Columns: 6
+## $ symbol        &lt;chr&gt; &quot;MMM&quot;, &quot;ABB&quot;, &quot;ABT&quot;, &quot;ABBV&quot;, &quot;ACN&quot;, &quot;AAP&quot;, &quot;AFL&quot;, &quot;A&quot;...
+## $ name          &lt;chr&gt; &quot;3M Company&quot;, &quot;ABB Ltd&quot;, &quot;Abbott Laboratories&quot;, &quot;AbbV...
+## $ ipo_year      &lt;chr&gt; &quot;n/a&quot;, &quot;n/a&quot;, &quot;n/a&quot;, &quot;2012&quot;, &quot;2001&quot;, &quot;n/a&quot;, &quot;n/a&quot;, &quot;1...
+## $ sector        &lt;chr&gt; &quot;Health Care&quot;, &quot;Consumer Durables&quot;, &quot;Health Care&quot;, &quot;H...
+## $ industry      &lt;chr&gt; &quot;Medical/Dental Instruments&quot;, &quot;Electrical Products&quot;, ...
+## $ summary_quote &lt;chr&gt; &quot;https://www.nasdaq.com/symbol/mmm&quot;, &quot;https://www.nas...</code></pre>
+<p>Based on this dataset, create a table and a bar plot that shows the number of companies per sector, in descending order</p>
+<pre class="r"><code>companies_per_sector &lt;- nyse %&gt;%
+  group_by((sector)) %&gt;%
+  count(sector) %&gt;%
+  arrange(desc(n))
+
+companies_per_sector</code></pre>
+<pre><code>## # A tibble: 12 x 3
+## # Groups:   (sector) [12]
+##    `(sector)`            sector                    n
+##    &lt;chr&gt;                 &lt;chr&gt;                 &lt;int&gt;
+##  1 Finance               Finance                  97
+##  2 Consumer Services     Consumer Services        79
+##  3 Public Utilities      Public Utilities         60
+##  4 Capital Goods         Capital Goods            45
+##  5 Health Care           Health Care              45
+##  6 Energy                Energy                   42
+##  7 Technology            Technology               40
+##  8 Basic Industries      Basic Industries         39
+##  9 Consumer Non-Durables Consumer Non-Durables    31
+## 10 Miscellaneous         Miscellaneous            12
+## 11 Transportation        Transportation           10
+## 12 Consumer Durables     Consumer Durables         8</code></pre>
+<pre class="r"><code>ggplot(companies_per_sector, aes(x=reorder(sector,-n), y=n)) +
+  labs(title = &quot;No. of Companies per Sector&quot;,
+      x = &quot;Sector&quot;,
+      y = &quot;No. of Companies&quot;) +
+  theme(axis.text.x=element_text(angle=50, size=15, vjust=0.5)) +
+  geom_col() +
+  NULL</code></pre>
+<p><img src="/project/project6_files/figure-html/companies_per_sector-1.png" width="1152" style="display: block; margin: auto;" /></p>
+<p>Next, let’s choose the <a href="https://en.wikipedia.org/wiki/Dow_Jones_Industrial_Average">Dow Jones Industrial Aveareg (DJIA)</a> stocks and their ticker symbols and download some data. Besides the thirty stocks that make up the DJIA, we will also add <code>SPY</code> which is an SP500 ETF (Exchange Traded Fund).</p>
+<pre class="r"><code># Notice the cache=TRUE argument in the chunk options. Because getting data is time consuming, # cache=TRUE means that once it downloads data, the chunk will not run again next time you knit your Rmd
+
+#myStocks &lt;- tickers %&gt;% 
+#  tq_get(get  = &quot;stock.prices&quot;,
+#         from = &quot;2000-01-01&quot;,
+#         to   = &quot;2020-08-31&quot;) %&gt;%
+#  group_by(symbol) 
+
+#Took too long to group_by, thus directly use the myStocks.csv
+
+myStocks &lt;- read.csv(here::here(&quot;data&quot;,&quot;myStocks.csv&quot;))
+myStocks &lt;- myStocks %&gt;%
+  select(-1) %&gt;% 
+  group_by(symbol)
+  
+myStocks$date=ymd(myStocks$date)
+
+glimpse(myStocks) # examine the structure of the resulting data frame</code></pre>
+<pre><code>## Rows: 153,121
+## Columns: 8
+## Groups: symbol [31]
+## $ symbol   &lt;chr&gt; &quot;MMM&quot;, &quot;MMM&quot;, &quot;MMM&quot;, &quot;MMM&quot;, &quot;MMM&quot;, &quot;MMM&quot;, &quot;MMM&quot;, &quot;MMM&quot;, &quot;M...
+## $ date     &lt;date&gt; 2000-01-03, 2000-01-04, 2000-01-05, 2000-01-06, 2000-01-0...
+## $ open     &lt;dbl&gt; 48.0, 46.4, 45.6, 47.2, 50.6, 50.2, 50.4, 51.0, 50.7, 50.4...
+## $ high     &lt;dbl&gt; 48.2, 47.4, 48.1, 51.2, 51.9, 51.8, 51.2, 51.8, 50.9, 50.5...
+## $ low      &lt;dbl&gt; 47.0, 45.3, 45.6, 47.2, 50.0, 50.0, 50.2, 50.4, 50.2, 49.5...
+## $ close    &lt;dbl&gt; 47.2, 45.3, 46.6, 50.4, 51.4, 51.1, 50.2, 50.4, 50.4, 49.7...
+## $ volume   &lt;dbl&gt; 2173400, 2713800, 3699400, 5975800, 4101200, 3863800, 2357...
+## $ adjusted &lt;dbl&gt; 28.1, 26.9, 27.7, 30.0, 30.5, 30.4, 29.9, 30.0, 30.0, 29.5...</code></pre>
+<p>Financial performance analysis depend on returns; If I buy a stock today for 100 and I sell it tomorrow for 101.75, my one-day return, assuming no transaction costs, is 1.75%. So given the adjusted closing prices, our first step is to calculate daily and monthly returns.</p>
+<pre class="r"><code>#calculate daily returns
+myStocks_returns_daily &lt;- myStocks %&gt;%
+  tq_transmute(select     = adjusted, 
+               mutate_fun = periodReturn, 
+               period     = &quot;daily&quot;, 
+               type       = &quot;log&quot;,
+               col_rename = &quot;daily_returns&quot;,
+               cols = c(nested.col))  
+
+#calculate monthly  returns
+myStocks_returns_monthly &lt;- myStocks %&gt;%
+  tq_transmute(select     = adjusted, 
+               mutate_fun = periodReturn, 
+               period     = &quot;monthly&quot;, 
+               type       = &quot;arithmetic&quot;,
+               col_rename = &quot;monthly_returns&quot;,
+               cols = c(nested.col)) 
+
+#calculate yearly returns
+myStocks_returns_annual &lt;- myStocks %&gt;%
+  group_by(symbol) %&gt;%
+  tq_transmute(select     = adjusted, 
+               mutate_fun = periodReturn, 
+               period     = &quot;yearly&quot;, 
+               type       = &quot;arithmetic&quot;,
+               col_rename = &quot;yearly_returns&quot;,
+               cols = c(nested.col))</code></pre>
+<p>Create a dataframe and assign it to a new object, where you summarise monthly returns since 2017-01-01 for each of the stocks and <code>SPY</code>; min, max, median, mean, SD.</p>
+<pre class="r"><code>summarise_monthly_returns &lt;- myStocks_returns_monthly %&gt;%
+  filter(date &gt; &quot;2016-12-31&quot;) %&gt;%
+  group_by(symbol) %&gt;%
+  summarise(min_return=min(monthly_returns), 
+          max_return=max(monthly_returns), 
+          median_return=median(monthly_returns),
+          mean_return=mean(monthly_returns),
+          sd_return=sd(monthly_returns))
+
+summarise_monthly_returns</code></pre>
+<pre><code>## # A tibble: 31 x 6
+##    symbol min_return max_return median_return mean_return sd_return
+##    &lt;chr&gt;       &lt;dbl&gt;      &lt;dbl&gt;         &lt;dbl&gt;       &lt;dbl&gt;     &lt;dbl&gt;
+##  1 AAPL       -0.181     0.200        0.0513     0.0387      0.0873
+##  2 AMGN       -0.104     0.180        0.0235     0.0171      0.0664
+##  3 AXP        -0.221     0.0988       0.0150     0.0109      0.0639
+##  4 BA         -0.458     0.257        0.0250     0.0124      0.120 
+##  5 CAT        -0.199     0.138        0.0318     0.0151      0.0742
+##  6 CRM        -0.155     0.391        0.0403     0.0350      0.0850
+##  7 CSCO       -0.155     0.130        0.0185     0.0125      0.0673
+##  8 CVX        -0.224     0.270        0.00173   -0.000926    0.0748
+##  9 DIS        -0.179     0.234       -0.00208    0.00967     0.0750
+## 10 DOW        -0.276     0.255        0.0456     0.00898     0.128 
+## # ... with 21 more rows</code></pre>
+<pre class="r"><code># SPY is in the table.</code></pre>
+<p>Plot a density plot, using <code>geom_density()</code>, for each of the stocks</p>
+<pre class="r"><code>density_monthly_returns &lt;- ggplot(myStocks_returns_monthly, aes(x=monthly_returns) ) +
+  geom_density() +
+  facet_wrap(~symbol) +
+  theme_stata()
+  NULL</code></pre>
+<pre><code>## NULL</code></pre>
+<pre class="r"><code>density_monthly_returns</code></pre>
+<p><img src="/project/project6_files/figure-html/density_monthly_returns-1.png" width="1152" style="display: block; margin: auto;" /></p>
+<p>We can see most of the stocks have monthly returns concentrated near 0, with some skewed slight to the left or right. The S&amp;P 500 has the narrowest and steepest density plot. This confirms our hypothesis that it is the least volatile as it is comprised of 500 large-cap companies that are in diverse sectors. Looking at individual stocks, the riskiest is Dow Inc. (DOW), as its density plot is the flattest. This indicates that its recorded monthly returns are dispersed and can vary signifcantly from month to month. The least risky stock is Microsoft (MSFT), which similar to SPY, has a narrow and steep curve. This indicates that there is a low variance on monthly returns.</p>
+<p>Finally, produce a plot that shows the expected monthly return (mean) of a stock on the Y axis and the risk (standard deviation) in the X-axis. Please use <code>ggrepel::geom_text_repel()</code> to label each stock with its ticker symbol</p>
+<pre class="r"><code>library(ggrepel)
+ggplot(summarise_monthly_returns, aes(x = sd_return, y = mean_return)) + 
+  geom_text_repel(aes(label = symbol), size = 3)+
+    labs(title = &quot;Risk-Return Profile of Selected Stocks since 2017&quot;, x = &quot;Mean Monthly Standard Deviation&quot;, y = &quot;Mean Monthly Return&quot;)+
+  geom_point() +
+  theme_stata()</code></pre>
+<p><img src="/project/project6_files/figure-html/risk_return_plot-1.png" width="1152" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>  NULL</code></pre>
+<pre><code>## NULL</code></pre>
+<p>This plot indicates that most companies offer a similar risk-return profile with a standard deviation of returns under 0.08 and a mean monthly return of 0.01 to 0.02. However, there are some outliers present. For example, WBA’s standard deviation of returns is close to 0.075, but its monthly mean return is almost -0.015. Other companies with a similar risk return profile bucket offer a much higher mean monthly return. Other outliers include DOW and BA, which have a monthly mean return of around 0.01, but compared to other companies offering a similar return, their monthly return standard deviation is much higher at 0.12 to 0.13.</p>

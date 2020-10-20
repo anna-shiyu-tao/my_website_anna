@@ -1,0 +1,99 @@
+---
+categories:
+- ""
+- ""
+date: "2020-10-20"
+description: Capital asset pricing model
+draft: false
+image: pic13.png
+keywords: ""
+slug: project7
+title: Capital asset pricing model
+---
+
+
+
+<p>Introduction to the Capital Asset Pricing Model (CAPM)</p>
+<p>The Capital Asset Market Pricing Model (CAPM) states that the return on a particular risky asset is related to returns of the ‘market’ as follows:</p>
+<p><span class="math inline">\(Return(asset) = \alpha + \beta*Return(market)+error\)</span></p>
+<p>Here, I use several individual stocks as target from the end of 2018 till now (Oct 2020).</p>
+<pre class="r"><code>myStocks &lt;- c(&quot;AAPL&quot;,&quot;AMZN&quot;,&quot;MSFT&quot;,&quot;FB&quot;,&quot;SPY&quot; ) %&gt;%
+  tq_get(get  = &quot;stock.prices&quot;,
+         from = &quot;2018-12-31&quot;,
+         to   = &quot;2020-10-10&quot;) %&gt;%
+  group_by(symbol) 
+
+str(myStocks) # examine the structure of the resulting data frame</code></pre>
+<pre><code>## tibble [2,245 x 8] (S3: grouped_df/tbl_df/tbl/data.frame)
+##  $ symbol  : chr [1:2245] &quot;AAPL&quot; &quot;AAPL&quot; &quot;AAPL&quot; &quot;AAPL&quot; ...
+##  $ date    : Date[1:2245], format: &quot;2018-12-31&quot; &quot;2019-01-02&quot; ...
+##  $ open    : num [1:2245] 39.6 38.7 36 36.1 37.2 ...
+##  $ high    : num [1:2245] 39.8 39.7 36.4 37.1 37.2 ...
+##  $ low     : num [1:2245] 39.1 38.6 35.5 36 36.5 ...
+##  $ close   : num [1:2245] 39.4 39.5 35.5 37.1 37 ...
+##  $ volume  : num [1:2245] 140014000 148158800 365248800 234428400 219111200 ...
+##  $ adjusted: num [1:2245] 38.6 38.6 34.8 36.3 36.2 ...
+##  - attr(*, &quot;groups&quot;)= tibble [5 x 2] (S3: tbl_df/tbl/data.frame)
+##   ..$ symbol: chr [1:5] &quot;AAPL&quot; &quot;AMZN&quot; &quot;FB&quot; &quot;MSFT&quot; ...
+##   ..$ .rows : list&lt;int&gt; [1:5] 
+##   .. ..$ : int [1:449] 1 2 3 4 5 6 7 8 9 10 ...
+##   .. ..$ : int [1:449] 450 451 452 453 454 455 456 457 458 459 ...
+##   .. ..$ : int [1:449] 1348 1349 1350 1351 1352 1353 1354 1355 1356 1357 ...
+##   .. ..$ : int [1:449] 899 900 901 902 903 904 905 906 907 908 ...
+##   .. ..$ : int [1:449] 1797 1798 1799 1800 1801 1802 1803 1804 1805 1806 ...
+##   .. ..@ ptype: int(0) 
+##   ..- attr(*, &quot;.drop&quot;)= logi TRUE</code></pre>
+<p>For yearly and monthly data, we assume discrete changes, so we the formula used to calculate the return for month <strong>(t+1)</strong> is</p>
+<p><span class="math inline">\(Return(t+1)= \frac{Adj.Close(t+1)}{Adj.Close (t)}-1\)</span></p>
+<p>For daily data we use log returns, or <span class="math inline">\(Return(t+1)= LN\frac{Adj.Close(t+1)}{Adj.Close (t)}\)</span></p>
+<pre class="r"><code>#calculate &#39;daily&#39;wealth&#39; returns, or what a 100 investment will grow to 
+cumulative_wealth &lt;- myStocks_returns_daily %&gt;%
+  mutate(wealth.index = 1000 * cumprod(1 + daily.returns))
+
+
+ggplot(cumulative_wealth, aes(x=date, y = wealth.index))+
+  geom_line(aes(colour=symbol))+
+  labs(x=&quot;Year&quot;, 
+       y=&quot;Value of investment&quot;, 
+       title = &quot;Growth of a $1000 investment over time&quot;) +
+  scale_y_continuous(labels = scales::dollar) +
+  theme_minimal()+
+  NULL</code></pre>
+<p><img src="/project/project7_files/figure-html/wealth_index-1.png" width="672" /></p>
+<p>Scatterplots of individual stocks returns versus S&amp;P500 Index returns.</p>
+<pre class="r"><code>#calculate daily returns
+monthly_capm_returns &lt;- myStocks_returns_monthly %&gt;%
+            spread(key = symbol, value = monthly.returns)  #just keep the period returns grouped by symbol
+
+
+ggpairs(monthly_capm_returns[-1]) #exclude &quot;Date&quot;, the first column, from the correlation matrix</code></pre>
+<p><img src="/project/project7_files/figure-html/correlationMatrix-1.png" width="672" /></p>
+<p>Examine the relationship between Facebook stock with S&amp;P500.</p>
+<pre class="r"><code>ggplot(monthly_capm_returns, aes(x=SPY, y = FB))+
+  geom_point()+
+  geom_smooth(method=&quot;lm&quot;, se=FALSE)</code></pre>
+<pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
+<p><img src="/project/project7_files/figure-html/FB_CAPM-1.png" width="672" /></p>
+<pre class="r"><code>FB_capm &lt;- lm(FB ~ SPY, data = monthly_capm_returns)
+mosaic::msummary(FB_capm)</code></pre>
+<pre><code>##             Estimate Std. Error t value    Pr(&gt;|t|)    
+## (Intercept) 0.008359   0.012067   0.693       0.496    
+## SPY         1.581988   0.213489   7.410 0.000000275 ***
+## 
+## Residual standard error: 0.0551 on 21 degrees of freedom
+## Multiple R-squared:  0.7234, Adjusted R-squared:  0.7102 
+## F-statistic: 54.91 on 1 and 21 DF,  p-value: 0.0000002749</code></pre>
+<pre class="r"><code>FB_capm %&gt;% broom::tidy(conf.int = TRUE)</code></pre>
+<pre><code>## # A tibble: 2 x 7
+##   term        estimate std.error statistic     p.value conf.low conf.high
+##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;       &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
+## 1 (Intercept)  0.00836    0.0121     0.693 0.496        -0.0167    0.0335
+## 2 SPY          1.58       0.213      7.41  0.000000275   1.14      2.03</code></pre>
+<pre class="r"><code>FB_capm %&gt;% broom::glance()</code></pre>
+<pre><code>## # A tibble: 1 x 12
+##   r.squared adj.r.squared  sigma statistic p.value    df logLik   AIC   BIC
+##       &lt;dbl&gt;         &lt;dbl&gt;  &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1     0.723         0.710 0.0551      54.9 2.75e-7     1   35.1 -64.2 -60.7
+## # ... with 3 more variables: deviance &lt;dbl&gt;, df.residual &lt;int&gt;, nobs &lt;int&gt;</code></pre>
+<pre class="r"><code>autoplot(FB_capm)</code></pre>
+<p><img src="/project/project7_files/figure-html/FB_CAPM-2.png" width="672" /></p>

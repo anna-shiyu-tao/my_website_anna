@@ -1,0 +1,36 @@
+---
+categories:
+- ""
+- ""
+date: "2020-10-19"
+description: About me
+draft: false
+image: pic11.jpg
+keywords: ""
+slug: project5
+title: About me
+---
+
+Hello, I'm **Anna, Shiyu Tao**. I was born in *Fujian* in *Mainland China* and then went to *Hong Kong* to pursue my undergraduate study in accounting and finance. During that time, I also attended a semester exchange in *The University of Manchester* and a summer exchange in *The University of British Columbia*. Both were amazing experiences and I'm very looking forward to the journey in **London Business School**! This is my [LinkedIn](https://www.linkedin.com/in/anna-shiyu-tao).
+
+Besides, I love reading, Chinese painting, playing piano, swimming and travelling! I am also a foodie and always attracted by different kinds of food. 
+
+=======
+---
+categories:
+- ""
+- ""
+date: "2020-10-19"
+description: About me
+draft: false
+image: pic11.jpg
+keywords: ""
+slug: project5
+title: About me
+---
+
+Hello, I'm **Anna, Shiyu Tao**. I was born in *Fujian* in *Mainland China* and then went to *Hong Kong* to pursue my undergraduate study in accounting and finance. During that time, I also attended a semester exchange in *The University of Manchester* and a summer exchange in *The University of British Columbia*. Both were amazing experiences and I'm very looking forward to the journey in **London Business School**! This is my [LinkedIn](https://www.linkedin.com/in/anna-shiyu-tao).
+
+Besides, I love reading, Chinese painting, playing piano, swimming and travelling! I am also a foodie and always attracted by different kinds of food. 
+
+>>>>>>> 9c26b84dae6a28d71b14f439c80457ca18d3983d
