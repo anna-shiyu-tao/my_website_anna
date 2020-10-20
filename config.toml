@@ -69,7 +69,7 @@ disqusShortname = ""
     # Button Style 1
     [[params.navigation.button1]]
       name = "My projects"
-      url = "project"
+      url = "Project"
 
     # Button Style 2
 #    [[params.navigation.button2]]
@@ -95,25 +95,25 @@ disqusShortname = ""
       title = "About me"
       subtitle = "A student from London Business School"
       image = "pic05.png"
-      url = "project/project5"
+      url = "Project/project5"
 
     [[params.tiles.showcase]]
       title = "Financial stock returns"
       subtitle = "Let us see how much we can gain from stock market"
       image = "pic06.jpg"
-      url = "project/project6"
+      url = "Project/project6"
 
     [[params.tiles.showcase]]
       title = "Capital Asset Pricing Model"
       subtitle = "The relationship between S&P500 with individual stocks"
       image = "pic07.png"
-      url = "project/project7"
+      url = "Project/project7"
 
     [[params.tiles.showcase]]
       title = "Salary for female and male in Omega Group"
       subtitle = "Does gender really make a difference"
       image = "pic08.png"
-      url = "project/project8"
+      url = "Project/project8"
 
 #    [[params.tiles.showcase]]
 #      title = "Consequat"
