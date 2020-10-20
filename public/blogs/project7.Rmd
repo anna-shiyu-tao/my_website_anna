@@ -1,0 +1,121 @@
+---
+categories:
+- ""
+- ""
+date: "2020-10-20"
+description: Capital asset pricing model
+draft: false
+image: picstock.jpg
+keywords: ""
+slug: project7
+title: Capital asset pricing model
+---
+
+```{r, setup, include=FALSE}
+library(mosaic)   # Load additional packages here 
+library(tidyverse)  # Loads tidyquant, tidyverse, lubridate, xts, quantmod, TTR 
+library(ggformula)
+library(GGally)
+library(tidyquant)
+library(ggfortify)
+
+options(scipen=999)
+
+# Some customization.  You can alter or delete as desired (if you know what you are doing).
+knitr::opts_chunk$set(
+  tidy=FALSE,     # display code as typed
+  size="small")   # slightly smaller font for code
+```
+
+
+Introduction to the Capital Asset Pricing Model (CAPM)
+
+The Capital Asset Market Pricing Model (CAPM) states that the return on a particular risky asset is related to returns of the 'market' as follows: 
+
+   Return(asset) = alpha + beta*Return(market)+error
+   
+Here, I use several individual stocks as target from the end of 2018 till now (Oct 2020).
+
+```{r load-data, cache=TRUE}
+myStocks <- c("AAPL","AMZN","MSFT","FB","SPY" ) %>%
+  tq_get(get  = "stock.prices",
+         from = "2018-12-31",
+         to   = "2020-10-10") %>%
+  group_by(symbol) 
+
+str(myStocks) # examine the structure of the resulting data frame
+```
+
+
+```{r calculate_returns,include=FALSE}
+
+#calculate monthly  returns
+myStocks_returns_monthly <- myStocks %>%
+  tq_transmute(select     = adjusted, 
+               mutate_fun = periodReturn, 
+               period     = "monthly", 
+               type       = "arithmetic",
+               col_rename = "monthly.returns") 
+
+#calculate daily returns
+myStocks_returns_daily <- myStocks %>%
+  tq_transmute(select     = adjusted, 
+               mutate_fun = periodReturn, 
+               period     = "daily", 
+               type       = "log",
+               col_rename = "daily.returns")  
+```
+
+
+For yearly and monthly data, we assume discrete changes, so we the formula used to calculate the return for month __(t+1)__ is 
+
+$Return(t+1)= \frac{Adj.Close(t+1)}{Adj.Close (t)}-1$
+
+For daily data we use log returns,  or $Return(t+1)= LN\frac{Adj.Close(t+1)}{Adj.Close (t)}$
+
+
+```{r wealth_index}
+#calculate 'daily'wealth' returns, or what a 100 investment will grow to 
+cumulative_wealth <- myStocks_returns_daily %>%
+  mutate(wealth.index = 1000 * cumprod(1 + daily.returns))
+
+
+ggplot(cumulative_wealth, aes(x=date, y = wealth.index))+
+  geom_line(aes(colour=symbol))+
+  labs(x="Year", 
+       y="Value of investment", 
+       title = "Growth of a $1000 investment over time") +
+  scale_y_continuous(labels = scales::dollar) +
+  theme_minimal()+
+  NULL
+```
+
+Scatterplots of individual stocks returns versus S&P500 Index returns.
+
+```{r correlationMatrix}
+#calculate daily returns
+monthly_capm_returns <- myStocks_returns_monthly %>%
+            spread(key = symbol, value = monthly.returns)  #just keep the period returns grouped by symbol
+
+
+ggpairs(monthly_capm_returns[-1]) #exclude "Date", the first column, from the correlation matrix
+
+```
+
+Examine the relationship between Facebook stock with S&P500.
+
+```{r FB_CAPM, warning=FALSE}
+
+ggplot(monthly_capm_returns, aes(x=SPY, y = FB))+
+  geom_point()+
+  geom_smooth(method="lm", se=FALSE)
+
+FB_capm <- lm(FB ~ SPY, data = monthly_capm_returns)
+mosaic::msummary(FB_capm)
+
+FB_capm %>% broom::tidy(conf.int = TRUE)
+FB_capm %>% broom::glance()
+
+autoplot(FB_capm)
+```
+

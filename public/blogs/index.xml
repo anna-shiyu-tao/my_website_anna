@@ -8,39 +8,45 @@
     <language>en-us</language>
     <lastBuildDate>Tue, 31 Oct 2017 22:27:21 -0500</lastBuildDate><atom:link href="/blogs/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Aliquam</title>
-      <link>/blogs/aliquam/</link>
-      <pubDate>Tue, 31 Oct 2017 22:42:51 -0500</pubDate>
+      <title>Capital asset pricing model</title>
+      <link>/blogs/project7/</link>
+      <pubDate>Tue, 20 Oct 2020 00:00:00 +0000</pubDate>
       
-      <guid>/blogs/aliquam/</guid>
-      <description></description>
+      <guid>/blogs/project7/</guid>
+      <description>Introduction to the Capital Asset Pricing Model (CAPM)
+The Capital Asset Market Pricing Model (CAPM) states that the return on a particular risky asset is related to returns of the ‘market’ as follows:
+Return(asset) = alpha + beta*Return(market)+error
+Here, I use several individual stocks as target from the end of 2018 till now (Oct 2020).
+myStocks &amp;lt;- c(&amp;quot;AAPL&amp;quot;,&amp;quot;AMZN&amp;quot;,&amp;quot;MSFT&amp;quot;,&amp;quot;FB&amp;quot;,&amp;quot;SPY&amp;quot; ) %&amp;gt;%tq_get(get = &amp;quot;stock.prices&amp;quot;,from = &amp;quot;2018-12-31&amp;quot;,to = &amp;quot;2020-10-10&amp;quot;) %&amp;gt;%group_by(symbol) str(myStocks) # examine the structure of the resulting data frame## tibble [2,245 x 8] (S3: grouped_df/tbl_df/tbl/data.</description>
     </item>
     
     <item>
-      <title>Tempus</title>
-      <link>/blogs/tempus/</link>
-      <pubDate>Tue, 31 Oct 2017 22:26:13 -0500</pubDate>
+      <title>Omega Group plc- Pay Discrimination</title>
+      <link>/blogs/project8/</link>
+      <pubDate>Tue, 20 Oct 2020 00:00:00 +0000</pubDate>
       
-      <guid>/blogs/tempus/</guid>
-      <description></description>
+      <guid>/blogs/project8/</guid>
+      <description>At the last board meeting of Omega Group Plc., the headquarters of a large multinational company, the issue was raised that women were being discriminated in the company, in the sense that the salaries were not the same for male and female executives. A quick analysis of a sample of 50 employees (of which 24 men and 26 women) revealed that the average salary for men was about 8,700 higher than for women.</description>
     </item>
     
     <item>
-      <title>Magna</title>
-      <link>/blogs/magna/</link>
-      <pubDate>Tue, 31 Oct 2017 22:26:09 -0500</pubDate>
+      <title>Returns of financial stocks</title>
+      <link>/blogs/project6/</link>
+      <pubDate>Tue, 20 Oct 2020 00:00:00 +0000</pubDate>
       
-      <guid>/blogs/magna/</guid>
-      <description></description>
+      <guid>/blogs/project6/</guid>
+      <description>You may find useful the material on finance data sources.
+We will use the tidyquant package to download historical data of stock prices, calculate returns, and examine the distribution of returns.
+We must first identify which stocks we want to download data for, and for this we must know their ticker symbol; Apple is known as AAPL, Microsoft as MSFT, McDonald’s as MCD, etc. The file nyse.csv contains 508 stocks listed on the NYSE, their ticker symbol, name, the IPO (Initial Public Offering) year, and the sector and industry the company is in.</description>
     </item>
     
     <item>
-      <title>Ipsum</title>
-      <link>/blogs/ipsum/</link>
-      <pubDate>Tue, 31 Oct 2017 21:28:43 -0500</pubDate>
+      <title>About me</title>
+      <link>/blogs/project5/</link>
+      <pubDate>Mon, 19 Oct 2020 00:00:00 +0000</pubDate>
       
-      <guid>/blogs/ipsum/</guid>
-      <description>Nullam et orci eu lorem consequat tincidunt vivamus et sagittis magna sed nunc rhoncus condimentum sem. In efficitur ligula tate urna. Maecenas massa sed magna lacinia magna pellentesque lorem ipsum dolor. Nullam et orci eu lorem consequat tincidunt. Vivamus et sagittis tempus.</description>
+      <guid>/blogs/project5/</guid>
+      <description>Hello, I’m Anna, Shiyu Tao. I was born in Fujian in Mainland China and then went to Hong Kong to pursue my undergraduate study in accounting and finance. During that time, I also attended a semester exchange in The University of Manchester and a summer exchange in The University of British Columbia. Both were amazing experiences and I’m very looking forward to the journey in London Business School! This is my LinkedIn.</description>
     </item>
     
   </channel>

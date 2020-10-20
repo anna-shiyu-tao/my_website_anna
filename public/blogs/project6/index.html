@@ -1,16 +1,78 @@
----
-categories:
-- ""
-- ""
-date: "2020-10-20"
-description: Returns of financial stocks
-draft: false
-image: pic12.jpg
-keywords: ""
-slug: project6
-title: Returns of financial stocks
----
+<!DOCTYPE HTML>
+<html>
 
+    <head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+	<meta name="description" content="Hi, I&#39;m Anna. Nice to meet you!">
+	<meta name="author" content="Anna, Shiyu Tao">
+	<meta name="generator" content="Hugo 0.76.5" />
+	<title>Returns of financial stocks &middot; Portfolio website for Anna</title>
+	<!-- Stylesheets -->
+	
+	<link rel="stylesheet" href="/css/main.css"/>
+	
+	
+
+	
+
+	<!-- Custom Fonts -->
+	<link href="/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+	
+	<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+	<link rel="icon" type="image/x-icon" href="/favicon.ico">
+	
+
+	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+	<!--[if lt IE 9]>
+	<script src="js/ie/html5shiv.js"></script>
+	<script src="js/ie/html5shiv.jsrespond.min.js"></script>
+	<![endif]-->
+</head>
+
+    <body>
+
+    <!-- Wrapper -->
+        <div id="wrapper">
+
+            <!-- Header -->
+    <header id="header" class="alt">
+        <a href="/" class="logo"><strong>My website</strong> <span>MFA2021 @ LBS</span></a>
+        <nav>
+            <a href="#menu">Menu</a>
+        </nav>
+    </header>
+
+<!-- Menu -->
+    <nav id="menu">
+        <ul class="links">
+            
+
+        </ul>
+        <ul class="actions vertical">
+            
+                <li><a href="/blogs" class="button special fit">My projects</a></li>
+            
+            
+        </ul>
+    </nav>
+
+        <!-- Main -->
+            <div id="main" class="alt">
+
+                
+                    <section id="one">
+                        <div class="inner">
+                            <header class="major">
+                                <h1>Returns of financial stocks</h1>
+                            </header>
+                            
+                                <span class="image main"><img src="/img/blogs/pic12.png" alt="" /></span>
+                            
+                            
 
 
 <p>You may find useful the material on <a href="https://mfa2021.netlify.app/reference/finance_data/">finance data sources</a>.</p>
@@ -56,7 +118,7 @@ companies_per_sector</code></pre>
   theme(axis.text.x=element_text(angle=50, size=15, vjust=0.5)) +
   geom_col() +
   NULL</code></pre>
-<p><img src="/project/project6_files/figure-html/companies_per_sector-1.png" width="1152" style="display: block; margin: auto;" /></p>
+<p><img src="/blogs/project6_files/figure-html/companies_per_sector-1.png" width="1152" style="display: block; margin: auto;" /></p>
 <p>Next, let’s choose the <a href="https://en.wikipedia.org/wiki/Dow_Jones_Industrial_Average">Dow Jones Industrial Aveareg (DJIA)</a> stocks and their ticker symbols and download some data. Besides the thirty stocks that make up the DJIA, we will also add <code>SPY</code> which is an SP500 ETF (Exchange Traded Fund).</p>
 <pre class="r"><code># Notice the cache=TRUE argument in the chunk options. Because getting data is time consuming, # cache=TRUE means that once it downloads data, the chunk will not run again next time you knit your Rmd
 
@@ -149,7 +211,7 @@ summarise_monthly_returns</code></pre>
   NULL</code></pre>
 <pre><code>## NULL</code></pre>
 <pre class="r"><code>density_monthly_returns</code></pre>
-<p><img src="/project/project6_files/figure-html/density_monthly_returns-1.png" width="1152" style="display: block; margin: auto;" /></p>
+<p><img src="/blogs/project6_files/figure-html/density_monthly_returns-1.png" width="1152" style="display: block; margin: auto;" /></p>
 <p>We can see most of the stocks have monthly returns concentrated near 0, with some skewed slight to the left or right. The S&amp;P 500 has the narrowest and steepest density plot. This confirms our hypothesis that it is the least volatile as it is comprised of 500 large-cap companies that are in diverse sectors. Looking at individual stocks, the riskiest is Dow Inc. (DOW), as its density plot is the flattest. This indicates that its recorded monthly returns are dispersed and can vary signifcantly from month to month. The least risky stock is Microsoft (MSFT), which similar to SPY, has a narrow and steep curve. This indicates that there is a low variance on monthly returns.</p>
 <p>Finally, produce a plot that shows the expected monthly return (mean) of a stock on the Y axis and the risk (standard deviation) in the X-axis. Please use <code>ggrepel::geom_text_repel()</code> to label each stock with its ticker symbol</p>
 <pre class="r"><code>library(ggrepel)
@@ -158,7 +220,60 @@ ggplot(summarise_monthly_returns, aes(x = sd_return, y = mean_return)) +
     labs(title = &quot;Risk-Return Profile of Selected Stocks since 2017&quot;, x = &quot;Mean Monthly Standard Deviation&quot;, y = &quot;Mean Monthly Return&quot;)+
   geom_point() +
   theme_stata()</code></pre>
-<p><img src="/project/project6_files/figure-html/risk_return_plot-1.png" width="1152" style="display: block; margin: auto;" /></p>
+<p><img src="/blogs/project6_files/figure-html/risk_return_plot-1.png" width="1152" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>  NULL</code></pre>
 <pre><code>## NULL</code></pre>
 <p>This plot indicates that most companies offer a similar risk-return profile with a standard deviation of returns under 0.08 and a mean monthly return of 0.01 to 0.02. However, there are some outliers present. For example, WBA’s standard deviation of returns is close to 0.075, but its monthly mean return is almost -0.015. Other companies with a similar risk return profile bucket offer a much higher mean monthly return. Other outliers include DOW and BA, which have a monthly mean return of around 0.01, but compared to other companies offering a similar return, their monthly return standard deviation is much higher at 0.12 to 0.13.</p>
+
+                        </div>
+                    </section>
+            <!-- Disqus Inject -->
+                
+            </div>
+            
+        <!-- Footer -->
+            
+                <!-- Footer -->
+    <footer id="footer">
+        <div class="inner">
+            <ul class="icons">
+                
+                    <li><a href="https://www.instagram.com/annatao_t/" class="icon alt fa-instagram" target="_blank"><span class="label">Instagram</span></a></li>
+                
+                    <li><a href="https://github.com/anna-shiyu-tao/" class="icon alt fa-github" target="_blank"><span class="label">GitHub</span></a></li>
+                
+                    <li><a href="https://www.linkedin.com/in/anna-shiyu-tao/" class="icon alt fa-linkedin" target="_blank"><span class="label">LinkedIn</span></a></li>
+                
+            </ul>
+            <ul class="copyright">
+                <li>&copy; London Business School</li>
+                
+                <li>Design:  <a href="https://www.html5up.net">HTML5 UP</a></li>
+                
+            </ul>
+        </div>
+    </footer>
+
+            
+        </div>
+
+    <!-- Scripts -->
+        <!-- Scripts -->
+    <!-- jQuery -->
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/jquery.scrolly.min.js"></script>
+    <script src="/js/jquery.scrollex.min.js"></script>
+    <script src="/js/skel.min.js"></script>
+    <script src="/js/util.js"></script>
+
+    
+
+    <!-- Main JS -->
+    <script src="/js/main.js"></script>
+
+    
+
+    
+
+    </body>
+</html>

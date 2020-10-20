@@ -5,7 +5,7 @@ categories:
 date: "2020-10-20"
 description: Returns of financial stocks
 draft: false
-image: pic12.jpg
+image: pic12.png
 keywords: ""
 slug: project6
 title: Returns of financial stocks

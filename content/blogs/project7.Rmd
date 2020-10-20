@@ -5,7 +5,7 @@ categories:
 date: "2020-10-20"
 description: Capital asset pricing model
 draft: false
-image: pic13.png
+image: picstock.jpg
 keywords: ""
 slug: project7
 title: Capital asset pricing model
@@ -32,9 +32,10 @@ Introduction to the Capital Asset Pricing Model (CAPM)
 
 The Capital Asset Market Pricing Model (CAPM) states that the return on a particular risky asset is related to returns of the 'market' as follows: 
 
-   $Return(asset) = \alpha + \beta*Return(market)+error$
+   Return(asset) = alpha + beta*Return(market)+error
    
 Here, I use several individual stocks as target from the end of 2018 till now (Oct 2020).
+
 ```{r load-data, cache=TRUE}
 myStocks <- c("AAPL","AMZN","MSFT","FB","SPY" ) %>%
   tq_get(get  = "stock.prices",
