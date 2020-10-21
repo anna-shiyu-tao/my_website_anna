@@ -68,7 +68,8 @@ monthly_capm_returns &lt;- myStocks_returns_monthly %&gt;%
 
 ggpairs(monthly_capm_returns[-1]) #exclude &quot;Date&quot;, the first column, from the correlation matrix</code></pre>
 <p><img src="/blogs/project7_files/figure-html/correlationMatrix-1.png" width="672" /></p>
-<p>Examine the relationship between Facebook stock with S&amp;P500.</p>
+<p>Examine the relationship between Facebook stock with S&amp;P500.
+The beta of Facebook stock is around 1.58. The alpha is 0.9% but not significant. R^2 shows how much of the stock volatility can be explained by the model.</p>
 <pre class="r"><code>ggplot(monthly_capm_returns, aes(x=SPY, y = FB))+
   geom_point()+
   geom_smooth(method=&quot;lm&quot;, se=FALSE)</code></pre>

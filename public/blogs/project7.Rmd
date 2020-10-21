@@ -103,7 +103,7 @@ ggpairs(monthly_capm_returns[-1]) #exclude "Date", the first column, from the co
 ```
 
 Examine the relationship between Facebook stock with S&P500.
-
+The beta of Facebook stock is around 1.58. The alpha is 0.9% but not significant. R^2 shows how much of the stock volatility can be explained by the model.
 ```{r FB_CAPM, warning=FALSE}
 
 ggplot(monthly_capm_returns, aes(x=SPY, y = FB))+
@@ -118,4 +118,5 @@ FB_capm %>% broom::glance()
 
 autoplot(FB_capm)
 ```
+
 

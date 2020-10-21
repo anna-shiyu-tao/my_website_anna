@@ -219,11 +219,9 @@ ggplot(summarise_monthly_returns, aes(x = sd_return, y = mean_return)) +
   geom_text_repel(aes(label = symbol), size = 3)+
     labs(title = &quot;Risk-Return Profile of Selected Stocks since 2017&quot;, x = &quot;Mean Monthly Standard Deviation&quot;, y = &quot;Mean Monthly Return&quot;)+
   geom_point() +
-  theme_stata()</code></pre>
-<p><img src="/blogs/project6_files/figure-html/risk_return_plot-1.png" width="1152" style="display: block; margin: auto;" /></p>
-<pre class="r"><code>  NULL</code></pre>
-<pre><code>## NULL</code></pre>
-<p>This plot indicates that most companies offer a similar risk-return profile with a standard deviation of returns under 0.08 and a mean monthly return of 0.01 to 0.02. However, there are some outliers present. For example, WBA’s standard deviation of returns is close to 0.075, but its monthly mean return is almost -0.015. Other companies with a similar risk return profile bucket offer a much higher mean monthly return. Other outliers include DOW and BA, which have a monthly mean return of around 0.01, but compared to other companies offering a similar return, their monthly return standard deviation is much higher at 0.12 to 0.13.</p>
+  NULL</code></pre>
+<p><img src="/blogs/project6_files/figure-html/risk_return_plot-1.png" width="1152" style="display: block; margin: auto;" />
+This plot indicates that most companies offer a similar risk-return profile with a standard deviation of returns under 0.08 and a mean monthly return of 0.01 to 0.02. However, there are some outliers present. For example, WBA’s standard deviation of returns is close to 0.075, but its monthly mean return is almost -0.015. Other companies with a similar risk return profile bucket offer a much higher mean monthly return. Other outliers include DOW and BA, which have a monthly mean return of around 0.01, but compared to other companies offering a similar return, their monthly return standard deviation is much higher at 0.12 to 0.13.</p>
 
                         </div>
                     </section>
